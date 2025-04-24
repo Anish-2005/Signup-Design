@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thrive Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #23465a;
+            --secondary: #F5E6D9;
+            --accent: #1E88E5;
+            --background: #FFF9F5;
+            --text: #2A2A2A;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+            display: none;
+        }
+        
+        .active-section {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .flip-card {
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .progress-bar {
+            height: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .profile-tag {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        .quote-box {
+            border-left: 4px solid var(--primary);
+        }
+
+        .mantra-box {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+
+        .aladin-font {
+            font-family: 'Aladin', cursive;
+        }
+
+        .avatar-upload {
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-[#FFF9F5]">
+    <!-- Profile Creation View -->
+    <div id="profile-creation">
+        <!-- Progress Bar -->
+        <div class="fixed top-0 left-0 right-0 h-1 bg-gray-200 z-50">
+            <div id="progress" class="progress-bar bg-[#1E88E5]" style="width: 0%"></div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="bg-[#23465a] text-white flex items-center justify-between px-6 py-3 fixed top-0 left-0 right-0 z-40">
+            <img alt="logo" width="100px" src="https://thrive-hives.vercel.app/assets/Logo-DFWKnQHC.png">
+            <div class="flex items-center gap-4">
+                <!-- Progress dots -->
+                <div class="flex space-x-2">
+                <button onclick="showSection('foundational')" class="hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]">1</button>
+                <button onclick="showSection('introduction')" class="hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]">2</button>
+                <button onclick="showSection('purpose')" class="hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]">3</button>
+                <button onclick="showSection('skills')" class="hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]">4</button>
+                <button onclick="showSection('life')" class="hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]">5</button>
+                <button onclick="showSection('dreams')" class="hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]">6</button>
+                <button onclick="showSection('reflection')" class="hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]">7</button>
+                <button onclick="showSection('community')" class="hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]">8</button>
+            </div>
+        </nav>
+
+        <div class="container mx-auto pt-24 px-4 pb-16">
+            <!-- Foundational Information -->
+            <section id="foundational" class="section active-section">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#1E88E5] mb-6 font-sans">Foundational Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div class="flip-card avatar-upload">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front bg-[#7cae9] p-6 rounded-lg">
+                                        <h3 class="text-xl font-semibold mb-4">Profile Photo</h3>
+                                        <div class="w-32 h-32 rounded-full bg-gray-200 mx-auto overflow-hidden">
+                                            <img id="avatar-preview" src="" alt="Avatar Preview" class="w-full h-full object-cover hidden">
+                                        </div>
+                                        <input type="file" id="avatar-input" accept="image/*" class="hidden">
+                                        <button onclick="document.getElementById('avatar-input').click()" class="mt-4 bg-[#1E88E5] text-white px-4 py-2 rounded-lg">Choose Image</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" id="full-name" placeholder="Full Name" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#1E88E5]">
+                        </div>
+                        <div class="space-y-6">
+                            <input type="text" id="location" placeholder="Location (City, State, Country)" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#1E88E5]">
+                            <input type="text" id="languages" placeholder="Preferred Language(s)" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#1E88E5]">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Self Introduction -->
+            <section id="introduction" class="section">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#6A0DAD] mb-6 font-sans">Self Introduction</h2>
+                    <div class="space-y-6">
+                        <textarea id="about-yourself" placeholder="Who are you when no one's watching?" class="w-full px-4 py-3 border rounded-md shadow-sm h-32 focus:ring-2 focus:ring-[#6A0DAD]"></textarea>
+                        <input type="text" id="describe-self" placeholder="Describe yourself in 3 words" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#6A0DAD]">
+                        <input type="text" id="friend-description" placeholder="Friend's 3-word description" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#6A0DAD]">
+                        <div class="mantra-box p-6 rounded-lg text-white">
+                            <textarea id="life-mantra" placeholder="Your life mantra..." class="w-full bg-transparent placeholder-white focus:outline-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Purpose and Intention -->
+            <section id="purpose" class="section">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#1E88E5] mb-6 font-sans">Purpose & Intention</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <textarea id="why-thrive" placeholder="Why did you choose Thrive?" class="w-full px-4 py-3 border rounded-md shadow-sm h-32 focus:ring-2 focus:ring-[#1E88E5]"></textarea>
+                            <textarea id="good-life" placeholder="What does a 'Good Life' mean to you?" class="w-full px-4 py-3 border rounded-md shadow-sm h-32 focus:ring-2 focus:ring-[#1E88E5]"></textarea>
+                        </div>
+                        <div class="space-y-6">
+                            <select id="life-aspirations" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#1E88E5]">
+                                <option value="">Current Life Aspirations</option>
+                                <option value="Find a job">Find a job</option>
+                                <option value="Start an organization">Start an organization</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Build a community">Build a community</option>
+                                <option value="Still exploring">Still exploring</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <textarea id="no-financial-pressure" placeholder="If financial pressure didn't exist, what would you do with your life?" class="w-full px-4 py-3 border rounded-md shadow-sm h-24 focus:ring-2 focus:ring-[#1E88E5]"></textarea>
+                            <div class="mantra-box p-6 rounded-lg text-white">
+                                <textarea id="million-dollar-creation" placeholder="If you received 1 million dollars today, what would you create with it?" class="w-full bg-transparent placeholder-white focus:outline-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills and Strengths -->
+            <section id="skills" class="section">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#2E8B57] mb-6 font-sans">Skills & Strengths</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div class="bg-[#F5E6D9] p-6 rounded-lg">
+                                <h3 class="text-xl font-semibold mb-4">Top Skills/Strengths</h3>
+                                <div id="skills-container" class="flex flex-wrap gap-2">
+                                    <input type="text" id="skill-input" placeholder="Add skill" class="px-4 py-2 border rounded-full" onkeydown="addSkill(event)">
+                                </div>
+                            </div>
+                            <textarea id="skills-to-learn" placeholder="What skills would you like to learn or deepen on this platform?" class="w-full px-4 py-3 border rounded-md shadow-sm h-32 focus:ring-2 focus:ring-[#2E8B57]"></textarea>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-[#E8F5E9] p-6 rounded-lg">
+                                <h3 class="text-xl font-semibold mb-4">Community Contributions</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" id="mentoring" class="w-5 h-5 rounded border-gray-300 text-[#2E8B57] focus:ring-[#2E8B57]">
+                                        Mentoring Others
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" id="local-circles" class="w-5 h-5 rounded border-gray-300 text-[#2E8B57] focus:ring-[#2E8B57]">
+                                        Starting Local Circles
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" id="creativity" class="w-5 h-5 rounded border-gray-300 text-[#2E8B57] focus:ring-[#2E8B57]">
+                                        Your Creativity
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" id="time" class="w-5 h-5 rounded border-gray-300 text-[#2E8B57] focus:ring-[#2E8B57]">
+                                        Your Time
+                                    </label>
+                                </div>
+                            </div>
+                            <textarea id="learned-so-far" placeholder="What have you learned so far on this platform?" class="w-full px-4 py-3 border rounded-md shadow-sm h-32 focus:ring-2 focus:ring-[#2E8B57]"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Life and Energy -->
+            <section id="life" class="section">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#FFA500] mb-6 font-sans">Life & Energy</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <textarea id="hobbies" placeholder="What are your hobbies or joys in life?" class="w-full px-4 py-3 border rounded-md shadow-sm h-32 focus:ring-2 focus:ring-[#FFA500]"></textarea>
+                            <input type="text" id="feel-alive" placeholder="What's something simple that makes you feel alive?" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#FFA500]">
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-[#FFF3E0] p-6 rounded-lg">
+                                <h3 class="text-xl font-semibold mb-4">Community Attraction</h3>
+                                <input type="text" id="community-drawn" placeholder="What kind of people or communities do you feel drawn to?" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#FFA500]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dreams and Imagination -->
+            <section id="dreams" class="section">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#FF6B6B] mb-6 font-sans">Dreams & Imagination</h2>
+                    <div class="space-y-6">
+                        <div class="mantra-box p-6 rounded-lg text-white">
+                            <textarea id="wildest-dream" placeholder="What is your wildest dream or vision for your life?" class="w-full bg-transparent placeholder-white focus:outline-none h-32"></textarea>
+                        </div>
+                        <textarea id="world-to-build" placeholder="What kind of world would you like to help build with Thrive?" class="w-full px-4 py-3 border rounded-md shadow-sm h-32 focus:ring-2 focus:ring-[#FF6B6B]"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reflection and Evolution -->
+            <section id="reflection" class="section">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#6A5ACD] mb-6 font-sans">Reflection & Evolution</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <textarea id="unlearned" placeholder="What is something you've unlearned recently?" class="w-full px-4 py-3 border rounded-md shadow-sm h-24 focus:ring-2 focus:ring-[#6A5ACD]"></textarea>
+                            <textarea id="five-years-ago" placeholder="Who were you five years ago, and what has changed since?" class="w-full px-4 py-3 border rounded-md shadow-sm h-24 focus:ring-2 focus:ring-[#6A5ACD]"></textarea>
+                        </div>
+                        <div class="space-y-6">
+                            <textarea id="peace-definition" placeholder="What does peace mean to you today?" class="w-full px-4 py-3 border rounded-md shadow-sm h-24 focus:ring-2 focus:ring-[#6A5ACD]"></textarea>
+                            <div class="bg-[#EDE7F6] p-6 rounded-lg">
+                                <h3 class="text-xl font-semibold mb-4">Message to Future Self</h3>
+                                <textarea id="future-message" placeholder="This message will be sent back to you in 6 months" class="w-full px-4 py-3 border rounded-md shadow-sm h-32 focus:ring-2 focus:ring-[#6A5ACD]"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Discovery -->
+            <section id="community" class="section">
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-[#008080] mb-6 font-sans">Community Discovery</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div class="bg-[#E0F7FA] p-6 rounded-lg">
+                                <h3 class="text-xl font-semibold mb-4">Collaboration Interests</h3>
+                                <div id="interests-container" class="flex flex-wrap gap-2">
+                                    <input type="text" id="interest-input" placeholder="Add interest" class="px-4 py-2 border rounded-full" onkeydown="addInterest(event)">
+                                </div>
+                            </div>
+                            <select id="available-for" class="w-full px-4 py-3 border rounded-md shadow-sm focus:ring-2 focus:ring-[#008080]">
+                                <option value="">Available For</option>
+                                <option value="Mentorship">Mentorship</option>
+                                <option value="Volunteering">Volunteering</option>
+                                <option value="Learning Circles">Learning Circles</option>
+                                <option value="Projects">Projects</option>
+                                <option value="Just Conversations">Just Conversations</option>
+                            </select>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-[#E0F7FA] p-6 rounded-lg">
+                                <h3 class="text-xl font-semibold mb-4">Connection Preferences</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" id="similar-skills" class="w-5 h-5 rounded border-gray-300 text-[#008080] focus:ring-[#008080]">
+                                        Similar Skills
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" id="complementary-strengths" class="w-5 h-5 rounded border-gray-300 text-[#008080] focus:ring-[#008080]">
+                                        Complementary Strengths
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" id="open-hearted" class="w-5 h-5 rounded border-gray-300 text-[#008080] focus:ring-[#008080]">
+                                        Anyone Open-Hearted
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between max-w-4xl mx-auto mt-8">
+                <button onclick="previousSection()" class="bg-[#23465a] text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-all font-medium">
+                    ← Previous
+                </button>
+                <button id="next-button" onclick="nextSection()" class="bg-[#1E88E5] text-white px-6 py-3 rounded-lg hover:bg-[#E88D5D] transition-all font-medium">
+                    Next →
+                </button>
+                <button id="complete-button" onclick="completeProfile()" class="hidden bg-[#2E8B57] text-white px-6 py-3 rounded-lg hover:bg-[#3CB371] transition-all font-medium">
+                    Complete Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Display View -->
+    <div id="profile-display" class="hidden min-h-screen">
+        <nav class="bg-[#23465a] text-white flex items-center justify-between px-6 py-3 fixed top-0 left-0 right-0 z-40">
+            <img alt="logo" width="100px" src="https://thrive-hives.vercel.app/assets/Logo-DFWKnQHC.png">
+            <button onclick="editProfile()" 
+                    class="bg-[#1E88E5] text-white px-5 py-2 rounded-md hover:bg-[#1565C0] transition-colors text-sm font-medium shadow-sm flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit Profile
+            </button>
+        </nav>
+
+        <div class="container mx-auto pt-28 px-4 pb-16">
+            <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Profile Header -->
+                <div class="bg-gradient-to-br from-[#c4e3f5] to-[#f5d4e3] p-8 flex flex-col md:flex-row items-center">
+                    <div class="w-40 h-40 rounded-full border-4 border-white shadow-lg overflow-hidden mr-8 mb-4 md:mb-0">
+                        <img id="profile-avatar" src="" alt="Profile Avatar" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h1 id="profile-name" class="text-3xl font-bold text-[#2A2A2A]"></h1>
+                        <div class="flex items-center mt-2">
+                            <svg class="w-5 h-5 text-[#1E88E5]" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span id="profile-location" class="ml-2 text-gray-700"></span>
+                        </div>
+                        <div class="flex items-center mt-2">
+                            <svg class="w-5 h-5 text-[#1E88E5]" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span id="profile-languages" class="ml-2 text-gray-700"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Content -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 max-w-6xl mx-auto">
+                    <!-- Left Column -->
+                    <div class="space-y-6">
+                        <!-- About Section -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4 font-sans">About</h2>
+                            <p id="profile-about" class="text-gray-600 mb-4 leading-relaxed"></p>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">In 3 words</h3>
+                                    <p id="profile-describe" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">As my friend would say</h3>
+                                    <p id="profile-friend-describe" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Life Mantra</h3>
+                                    <p id="profile-mantra" class="text-blue-700 mt-1 italic"></p>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Purpose Section -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4 font-sans">Purpose</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Why Thrive?</h3>
+                                    <p id="profile-why-thrive" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">My "Good Life"</h3>
+                                    <p id="profile-good-life" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Current Aspirations</h3>
+                                    <p id="profile-aspirations" class="text-gray-800 mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Dreams Section -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4 font-sans">Vision</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Without Financial Pressure</h3>
+                                    <p id="profile-no-pressure" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">With $1 Million</h3>
+                                    <p id="profile-million" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Wildest Dream</h3>
+                                    <p id="profile-wildest-dream" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">World to Build</h3>
+                                    <p id="profile-world-build" class="text-gray-800 mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <!-- Skills Section -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4 font-sans">Skills & Strengths</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Top Skills</h3>
+                                    <div id="profile-skills" class="flex flex-wrap gap-2 mt-2">
+                                        <!-- Skills will be inserted here -->
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Skills to Develop</h3>
+                                    <p id="profile-skills-learn" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Community Contributions</h3>
+                                    <div id="profile-contributions" class="flex flex-wrap gap-2 mt-2">
+                                        <!-- Contributions will be inserted here -->
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Learned on Platform</h3>
+                                    <p id="profile-learned" class="text-gray-800 mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Life Section -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4 font-sans">Life & Energy</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Hobbies & Joys</h3>
+                                    <p id="profile-hobbies" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">What Makes Me Feel Alive</h3>
+                                    <p id="profile-feel-alive" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Drawn to Communities</h3>
+                                    <p id="profile-community-drawn" class="text-gray-800 mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Reflection Section -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4 font-sans">Reflection</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Recently Unlearned</h3>
+                                    <p id="profile-unlearned" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Five Years Ago</h3>
+                                    <p id="profile-five-years" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Peace Means</h3>
+                                    <p id="profile-peace" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div class="bg-purple-50 p-4 rounded-lg">
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Message to Future Self</h3>
+                                    <p id="profile-future-message" class="text-purple-700 mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Community Section -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4 font-sans">Community</h2>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Collaboration Interests</h3>
+                                    <div id="profile-interests" class="flex flex-wrap gap-2 mt-2">
+                                        <!-- Interests will be inserted here -->
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Available For</h3>
+                                    <p id="profile-available" class="text-gray-800 mt-1"></p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Open to Connecting With</h3>
+                                    <div id="profile-connections" class="flex flex-wrap gap-2 mt-2">
+                                        <!-- Connections will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let skills = [];
+        let interests = [];
+        let avatarBase64 = '';
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load data from localStorage if available
+            loadFromLocalStorage();
+            
+            // Set up avatar upload
+            document.getElementById('avatar-input').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        avatarBase64 = event.target.result;
+                        document.getElementById('avatar-preview').src = avatarBase64;
+                        document.getElementById('avatar-preview').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Update the complete button visibility
+            updateCompleteButton();
+        });
+
+        // Section navigation functions
+        const sections = [
+            'foundational', 'introduction', 'purpose', 
+            'skills', 'life', 'dreams', 'reflection', 'community'
+        ];
+        let currentSection = 0;
+
+        function updateProgress() {
+            const progress = (currentSection + 1) / sections.length * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+            
+            // Update navigation dots
+            document.querySelectorAll('nav button').forEach((btn, index) => {
+                btn.className = index <= currentSection ? 
+                    'hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-[#1E88E5]' : 
+                    'hover:text-[#F5E6D9] w-8 h-8 rounded-full bg-gray-600';
+            });
+            
+            // Update button visibility
+            updateCompleteButton();
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            document.getElementById(sectionId).classList.add('active-section');
+            currentSection = sections.indexOf(sectionId);
+            updateProgress();
+        }
+
+        function nextSection() {
+            if (currentSection < sections.length - 1) {
+                saveToLocalStorage();
+                showSection(sections[++currentSection]);
+            }
+        }
+
+        function previousSection() {
+            if (currentSection > 0) {
+                saveToLocalStorage();
+                showSection(sections[--currentSection]);
+            }
+        }
+
+        function updateCompleteButton() {
+            const nextButton = document.getElementById('next-button');
+            const completeButton = document.getElementById('complete-button');
+            
+            if (currentSection === sections.length - 1) {
+                nextButton.classList.add('hidden');
+                completeButton.classList.remove('hidden');
+            } else {
+                nextButton.classList.remove('hidden');
+                completeButton.classList.add('hidden');
+            }
+        }
+
+        // Skill and Interest management
+        function addSkill(event) {
+            if (event.key === 'Enter' && event.target.value.trim() !== '') {
+                const skill = event.target.value.trim();
+                if (!skills.includes(skill)) {
+                    skills.push(skill);
+                    renderSkills();
+                }
+                event.target.value = '';
+                event.preventDefault();
+            }
+        }
+
+        function removeSkill(index) {
+            skills.splice(index, 1);
+            renderSkills();
+        }
+
+        function renderSkills() {
+            const container = document.getElementById('skills-container');
+            container.innerHTML = '';
+            
+            skills.forEach((skill, index) => {
+                const skillElement = document.createElement('span');
+                skillElement.className = 'bg-white px-4 py-2 rounded-full flex items-center';
+                skillElement.innerHTML = `
+                    ${skill}
+                    <button onclick="removeSkill(${index})" class="ml-2 text-red-500">
+                        &times;
+                    </button>
+                `;
+                container.appendChild(skillElement);
+            });
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'skill-input';
+            input.placeholder = 'Add skill';
+            input.className = 'px-4 py-2 border rounded-full';
+            input.onkeydown = addSkill;
+            container.appendChild(input);
+        }
+
+        function addInterest(event) {
+            if (event.key === 'Enter' && event.target.value.trim() !== '') {
+                const interest = event.target.value.trim();
+                if (!interests.includes(interest)) {
+                    interests.push(interest);
+                    renderInterests();
+                }
+                event.target.value = '';
+                event.preventDefault();
+            }
+        }
+
+        function removeInterest(index) {
+            interests.splice(index, 1);
+            renderInterests();
+        }
+
+        function renderInterests() {
+            const container = document.getElementById('interests-container');
+            container.innerHTML = '';
+            
+            interests.forEach((interest, index) => {
+                const interestElement = document.createElement('span');
+                interestElement.className = 'bg-white px-4 py-2 rounded-full flex items-center';
+                interestElement.innerHTML = `
+                    ${interest}
+                    <button onclick="removeInterest(${index})" class="ml-2 text-red-500">
+                        &times;
+                    </button>
+                `;
+                container.appendChild(interestElement);
+            });
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'interest-input';
+            input.placeholder = 'Add interest';
+            input.className = 'px-4 py-2 border rounded-full';
+            input.onkeydown = addInterest;
+            container.appendChild(input);
+        }
+
+        // Data storage functions
+        function saveToLocalStorage() {
+            const profileData = {
+                avatar: avatarBase64,
+                fullName: document.getElementById('full-name').value,
+                location: document.getElementById('location').value,
+                languages: document.getElementById('languages').value,
+                aboutYourself: document.getElementById('about-yourself').value,
+                describeSelf: document.getElementById('describe-self').value,
+                friendDescription: document.getElementById('friend-description').value,
+                lifeMantra: document.getElementById('life-mantra').value,
+                whyThrive: document.getElementById('why-thrive').value,
+                goodLife: document.getElementById('good-life').value,
+                lifeAspirations: document.getElementById('life-aspirations').value,
+                noFinancialPressure: document.getElementById('no-financial-pressure').value,
+                millionDollarCreation: document.getElementById('million-dollar-creation').value,
+                skills: skills,
+                skillsToLearn: document.getElementById('skills-to-learn').value,
+                mentoring: document.getElementById('mentoring').checked,
+                localCircles: document.getElementById('local-circles').checked,
+                creativity: document.getElementById('creativity').checked,
+                time: document.getElementById('time').checked,
+                learnedSoFar: document.getElementById('learned-so-far').value,
+                hobbies: document.getElementById('hobbies').value,
+                feelAlive: document.getElementById('feel-alive').value,
+                communityDrawn: document.getElementById('community-drawn').value,
+                wildestDream: document.getElementById('wildest-dream').value,
+                worldToBuild: document.getElementById('world-to-build').value,
+                unlearned: document.getElementById('unlearned').value,
+                fiveYearsAgo: document.getElementById('five-years-ago').value,
+                peaceDefinition: document.getElementById('peace-definition').value,
+                futureMessage: document.getElementById('future-message').value,
+                interests: interests,
+                availableFor: document.getElementById('available-for').value,
+                similarSkills: document.getElementById('similar-skills').checked,
+                complementaryStrengths: document.getElementById('complementary-strengths').checked,
+                openHearted: document.getElementById('open-hearted').checked
+            };
+            
+            localStorage.setItem('thriveProfile', JSON.stringify(profileData));
+        }
+
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('thriveProfile');
+            if (savedData) {
+                const profileData = JSON.parse(savedData);
+                
+                // Set values for all fields
+                avatarBase64 = profileData.avatar || '';
+                if (avatarBase64) {
+                    document.getElementById('avatar-preview').src = avatarBase64;
+                    document.getElementById('avatar-preview').classList.remove('hidden');
+                }
+                
+                document.getElementById('full-name').value = profileData.fullName || '';
+                document.getElementById('location').value = profileData.location || '';
+                document.getElementById('languages').value = profileData.languages || '';
+                document.getElementById('about-yourself').value = profileData.aboutYourself || '';
+                document.getElementById('describe-self').value = profileData.describeSelf || '';
+                document.getElementById('friend-description').value = profileData.friendDescription || '';
+                document.getElementById('life-mantra').value = profileData.lifeMantra || '';
+                document.getElementById('why-thrive').value = profileData.whyThrive || '';
+                document.getElementById('good-life').value = profileData.goodLife || '';
+                document.getElementById('life-aspirations').value = profileData.lifeAspirations || '';
+                document.getElementById('no-financial-pressure').value = profileData.noFinancialPressure || '';
+                document.getElementById('million-dollar-creation').value = profileData.millionDollarCreation || '';
+                
+                skills = profileData.skills || [];
+                renderSkills();
+                
+                document.getElementById('skills-to-learn').value = profileData.skillsToLearn || '';
+                document.getElementById('mentoring').checked = profileData.mentoring || false;
+                document.getElementById('local-circles').checked = profileData.localCircles || false;
+                document.getElementById('creativity').checked = profileData.creativity || false;
+                document.getElementById('time').checked = profileData.time || false;
+                document.getElementById('learned-so-far').value = profileData.learnedSoFar || '';
+                document.getElementById('hobbies').value = profileData.hobbies || '';
+                document.getElementById('feel-alive').value = profileData.feelAlive || '';
+                document.getElementById('community-drawn').value = profileData.communityDrawn || '';
+                document.getElementById('wildest-dream').value = profileData.wildestDream || '';
+                document.getElementById('world-to-build').value = profileData.worldToBuild || '';
+                document.getElementById('unlearned').value = profileData.unlearned || '';
+                document.getElementById('five-years-ago').value = profileData.fiveYearsAgo || '';
+                document.getElementById('peace-definition').value = profileData.peaceDefinition || '';
+                document.getElementById('future-message').value = profileData.futureMessage || '';
+                
+                interests = profileData.interests || [];
+                renderInterests();
+                
+                document.getElementById('available-for').value = profileData.availableFor || '';
+                document.getElementById('similar-skills').checked = profileData.similarSkills || false;
+                document.getElementById('complementary-strengths').checked = profileData.complementaryStrengths || false;
+                document.getElementById('open-hearted').checked = profileData.openHearted || false;
+            }
+        }
+
+        // Profile completion
+        function completeProfile() {
+            saveToLocalStorage();
+            displayProfile();
+        }
+
+        function displayProfile() {
+            const savedData = JSON.parse(localStorage.getItem('thriveProfile'));
+            
+            // Basic Info
+            document.getElementById('profile-avatar').src = savedData.avatar || 'https://via.placeholder.com/150';
+            document.getElementById('profile-name').textContent = savedData.fullName || 'Anonymous';
+            document.getElementById('profile-location').textContent = savedData.location || 'Not specified';
+            document.getElementById('profile-languages').textContent = savedData.languages || 'Not specified';
+            
+            // About Section
+            document.getElementById('profile-about').textContent = savedData.aboutYourself || 'Not provided';
+            document.getElementById('profile-describe').textContent = savedData.describeSelf || 'Not provided';
+            document.getElementById('profile-friend-describe').textContent = savedData.friendDescription || 'Not provided';
+            document.getElementById('profile-mantra').textContent = savedData.lifeMantra || 'No mantra provided';
+            
+            // Purpose Section
+            document.getElementById('profile-why-thrive').textContent = savedData.whyThrive || 'Not provided';
+            document.getElementById('profile-good-life').textContent = savedData.goodLife || 'Not provided';
+            document.getElementById('profile-aspirations').textContent = savedData.lifeAspirations || 'Not specified';
+            document.getElementById('profile-no-pressure').textContent = savedData.noFinancialPressure || 'Not provided';
+            document.getElementById('profile-million').textContent = savedData.millionDollarCreation || 'Not provided';
+            document.getElementById('profile-wildest-dream').textContent = savedData.wildestDream || 'Not provided';
+            document.getElementById('profile-world-build').textContent = savedData.worldToBuild || 'Not provided';
+            
+            // Skills Section
+            const skillsContainer = document.getElementById('profile-skills');
+            skillsContainer.innerHTML = '';
+            (savedData.skills || []).forEach(skill => {
+                const skillElement = document.createElement('span');
+                skillElement.className = 'profile-tag px-4 py-2 rounded-full';
+                skillElement.textContent = skill;
+                skillsContainer.appendChild(skillElement);
+            });
+            
+            document.getElementById('profile-skills-learn').textContent = savedData.skillsToLearn || 'Not provided';
+            
+            const contributionsContainer = document.getElementById('profile-contributions');
+            contributionsContainer.innerHTML = '';
+            if (savedData.mentoring) {
+                const contribution = document.createElement('span');
+                contribution.className = 'profile-tag px-4 py-2 rounded-full';
+                contribution.textContent = 'Mentoring Others';
+                contributionsContainer.appendChild(contribution);
+            }
+            if (savedData.localCircles) {
+                const contribution = document.createElement('span');
+                contribution.className = 'profile-tag px-4 py-2 rounded-full';
+                contribution.textContent = 'Local Circles';
+                contributionsContainer.appendChild(contribution);
+            }
+            if (savedData.creativity) {
+                const contribution = document.createElement('span');
+                contribution.className = 'profile-tag px-4 py-2 rounded-full';
+                contribution.textContent = 'Creativity';
+                contributionsContainer.appendChild(contribution);
+            }
+            if (savedData.time) {
+                const contribution = document.createElement('span');
+                contribution.className = 'profile-tag px-4 py-2 rounded-full';
+                contribution.textContent = 'Time';
+                contributionsContainer.appendChild(contribution);
+            }
+            
+            document.getElementById('profile-learned').textContent = savedData.learnedSoFar || 'Not provided';
+            
+            // Life Section
+            document.getElementById('profile-hobbies').textContent = savedData.hobbies || 'Not provided';
+            document.getElementById('profile-feel-alive').textContent = savedData.feelAlive || 'Not provided';
+            document.getElementById('profile-community-drawn').textContent = savedData.communityDrawn || 'Not provided';
+            
+            // Reflection Section
+            document.getElementById('profile-unlearned').textContent = savedData.unlearned || 'Not provided';
+            document.getElementById('profile-five-years').textContent = savedData.fiveYearsAgo || 'Not provided';
+            document.getElementById('profile-peace').textContent = savedData.peaceDefinition || 'Not provided';
+            document.getElementById('profile-future-message').textContent = savedData.futureMessage || 'No message for future self';
+            
+            // Community Section
+            const interestsContainer = document.getElementById('profile-interests');
+            interestsContainer.innerHTML = '';
+            (savedData.interests || []).forEach(interest => {
+                const interestElement = document.createElement('span');
+                interestElement.className = 'profile-tag px-4 py-2 rounded-full';
+                interestElement.textContent = interest;
+                interestsContainer.appendChild(interestElement);
+            });
+            
+            document.getElementById('profile-available').textContent = savedData.availableFor || 'Not specified';
+            
+            const connectionsContainer = document.getElementById('profile-connections');
+            connectionsContainer.innerHTML = '';
+            if (savedData.similarSkills) {
+                const connection = document.createElement('span');
+                connection.className = 'profile-tag px-4 py-2 rounded-full';
+                connection.textContent = 'Similar Skills';
+                connectionsContainer.appendChild(connection);
+            }
+            if (savedData.complementaryStrengths) {
+                const connection = document.createElement('span');
+                connection.className = 'profile-tag px-4 py-2 rounded-full';
+                connection.textContent = 'Complementary Strengths';
+                connectionsContainer.appendChild(connection);
+            }
+            if (savedData.openHearted) {
+                const connection = document.createElement('span');
+                connection.className = 'profile-tag px-4 py-2 rounded-full';
+                connection.textContent = 'Open-Hearted';
+                connectionsContainer.appendChild(connection);
+            }
+            
+            // Switch to profile view
+            document.getElementById('profile-creation').classList.add('hidden');
+            document.getElementById('profile-display').classList.remove('hidden');
+            document.getElementById('profile-creation-nav').classList.add('hidden');
+            document.getElementById('profile-display-nav').classList.remove('hidden');
+        }
+
+        function editProfile() {
+            document.getElementById('profile-display').classList.add('hidden');
+            document.getElementById('profile-creation').classList.remove('hidden');
+            loadFromLocalStorage();
+            showSection(sections[currentSection]);
+            document.getElementById('profile-creation-nav').classList.add('hidden');
+            document.getElementById('profile-display-nav').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
